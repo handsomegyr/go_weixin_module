@@ -9,6 +9,7 @@ import (
 	//"net/url"
 	"time"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"github.com/silenceper/wechat"
 )
@@ -67,10 +68,10 @@ func (c *SnsController) Index() {
 
 		//配置微信参数
 		config := &wechat.Config{
-			AppID:          "your app id",
-			AppSecret:      "your app secret",
-			Token:          "your token",
-			EncodingAESKey: "your encoding aes key",
+			AppID:          beego.AppConfig.String("weixinappid"),
+			AppSecret:      beego.AppConfig.String("weixinappsecret"),
+			Token:          "",
+			EncodingAESKey: "",
 		}
 		wc := wechat.NewWechat(config)
 
@@ -115,10 +116,10 @@ func (c *SnsController) Callback() {
 		if code != "code" {
 			//配置微信参数
 			config := &wechat.Config{
-				AppID:          "your app id",
-				AppSecret:      "your app secret",
-				Token:          "your token",
-				EncodingAESKey: "your encoding aes key",
+				AppID:          beego.AppConfig.String("weixinappid"),
+				AppSecret:      beego.AppConfig.String("weixinappsecret"),
+				Token:          "",
+				EncodingAESKey: "",
 			}
 			wc := wechat.NewWechat(config)
 			oauth := wc.GetOauth()
