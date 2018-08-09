@@ -54,7 +54,8 @@ func (c *SnsController) Index() {
 		//c.StopRun()
 		controllerName, _ := c.getControllerAndAction()
 
-		redirectUri := c.Ctx.Input.Site() + ":" + library.Strval(c.Ctx.Input.Port())
+		//redirectUri := c.Ctx.Input.Site() + ":" + library.Strval(c.Ctx.Input.Port())
+		redirectUri := c.Ctx.Input.Site()
 		redirectUri += "/" + c.ModuleName
 		redirectUri += "/" + controllerName
 		redirectUri += "/callback"
