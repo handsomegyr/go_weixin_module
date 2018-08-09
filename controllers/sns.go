@@ -95,8 +95,8 @@ func (c *SnsController) Index() {
 		redirectUri += "/callback"
 		redirectUri += "?appid=" + appid
 		redirectUri += "&scope=" + scope
-		//redirectUri += "&redirect=" + library.Urlencode(redirect)
-		c.SetSession("redirect", redirect)
+		redirectUri += "&redirect=" + library.Urlencode(redirect)
+		//c.SetSession("redirect", redirect)
 
 		//c.Ctx.WriteString(redirectUri)
 		//return
@@ -128,8 +128,8 @@ func (c *SnsController) Callback() {
 
 	appid := library.Trim(c.GetString("appid", ""))
 	scope := library.Trim(c.GetString("scope", ""))
-	//redirect := library.Trim(c.GetString("redirect", ""))
-	redirect := library.Strval(c.GetSession("redirect"))
+	redirect := library.Trim(c.GetString("redirect", ""))
+	//redirect := library.Strval(c.GetSession("redirect"))
 
 	state := library.Trim(c.GetString("state", ""))
 	code := library.Trim(c.GetString("code", ""))
