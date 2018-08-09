@@ -7,6 +7,7 @@ import (
 	//"fmt"
 	//"net"
 	//"net/url"
+	"sort"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -241,8 +242,19 @@ func (c *SnsController) getRedirectUrl(redirect string, openid string, others ma
 	} else {
 		redirect += "?FromUserName=" + openid
 	}
-	for key, val := range others {
-		redirect += "&" + key + "=" + val
+
+	/* 排序输出 */
+	var keys []string
+	for k := range others {
+		keys = append(keys, k)
 	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		redirect += "&" + k + "=" + others[k]
+	}
+
+	//for key, val := range others {
+	//	redirect += "&" + key + "=" + val
+	//}
 	return redirect
 }
