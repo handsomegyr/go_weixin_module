@@ -35,7 +35,7 @@ func (c *SnsController) Index() {
 	//是否检查回调域名
 	//dc := library.Trim(c.GetString("dc", "0"))
 	//是否刷新
-	refresh := library.Trim(c.GetString("refresh", "0"))
+	refresh := library.Intval(c.GetString("refresh", "0"))
 
 	secret := scope + "_" + appid
 
@@ -52,7 +52,7 @@ func (c *SnsController) Index() {
 			return
 		}
 	} else {
-		if library.Empty(refresh) {
+		if refresh == 0 {
 			openID, _ := c.GetSecureCookie(secret, secret+"_openid")
 			if !library.Empty(openID) {
 				t1 := time.Now()
@@ -76,6 +76,7 @@ func (c *SnsController) Index() {
 				others["unionid"] = library.Urlencode(unionid)
 				others["signkey2"] = c.getSignKey(unionid, timestamp)
 				others["t2elapsed"] = library.Strval(0)
+				others["is_cookie_from"] = library.Strval(1)
 				redirect = c.getRedirectUrl(redirect, openID, others)
 
 				c.Redirect(redirect, 302)
