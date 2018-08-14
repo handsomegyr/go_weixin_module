@@ -153,6 +153,11 @@ func (c *SnsController) Callback() {
 	} else {
 		//c.StopRun()
 
+		weixincookieexpiretime, err4Cookie := beego.AppConfig.Int64("weixincookieexpiretime")
+		if err4Cookie != nil {
+			c.Ctx.WriteString(err4Cookie.Error())
+			return
+		}
 		// 根据Appid获取微信配置信息
 		if code != "code" {
 			//配置微信参数
@@ -177,9 +182,9 @@ func (c *SnsController) Callback() {
 			t1elapsed := time.Since(t1)
 
 			// 设置cookie
-			c.SetSecureCookie(secret, secret+"_openid", resToken.OpenID, 3600*1.5, "/")
-			c.SetSecureCookie(secret, secret+"_userToken", resToken.AccessToken, 3600*1.5, "/")
-			c.SetSecureCookie(secret, secret+"_refreshToken", resToken.RefreshToken, 3600*1.5, "/")
+			c.SetSecureCookie(secret, secret+"_openid", resToken.OpenID, weixincookieexpiretime, "/")
+			c.SetSecureCookie(secret, secret+"_userToken", resToken.AccessToken, weixincookieexpiretime, "/")
+			c.SetSecureCookie(secret, secret+"_refreshToken", resToken.RefreshToken, weixincookieexpiretime, "/")
 
 			others := make(map[string]string, 0)
 			others["t1elapsed"] = library.Strval(t1elapsed.Nanoseconds())
@@ -200,9 +205,9 @@ func (c *SnsController) Callback() {
 				t2elapsed := time.Since(t2)
 
 				// 设置cookie
-				c.SetSecureCookie(secret, secret+"_nickname", userInfo.Nickname, 3600*1.5, "/")
-				c.SetSecureCookie(secret, secret+"_headimgurl", userInfo.HeadImgURL, 3600*1.5, "/")
-				c.SetSecureCookie(secret, secret+"_unionid", userInfo.Unionid, 3600*1.5, "/")
+				c.SetSecureCookie(secret, secret+"_nickname", userInfo.Nickname, weixincookieexpiretime, "/")
+				c.SetSecureCookie(secret, secret+"_headimgurl", userInfo.HeadImgURL, weixincookieexpiretime, "/")
+				c.SetSecureCookie(secret, secret+"_unionid", userInfo.Unionid, weixincookieexpiretime, "/")
 
 				others["nickname"] = library.Urlencode(userInfo.Nickname)
 				others["headimgurl"] = library.Urlencode(userInfo.HeadImgURL)
